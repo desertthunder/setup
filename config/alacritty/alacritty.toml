@@ -1,0 +1,28 @@
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "SemiBold" }
+size = 16
+
+[env]
+TERM = "xterm-256color"
+
+[window]
+padding = { x = 8, y = 8 }
+
+[general]
+# Available Themes
+#
+#   ayu_dark
+#   cyber_punk_neon
+#   enfocado_dark
+#   everforest_dark
+#   falcon
+#   gotham
+#   kanagawa_dragon
+#   kanagawa_wave
+#   nord
+#   nordic
+#   papercolor_dark
+#
+# See ./themes/ for all available themes
+import = ["~/.config/alacritty/themes/ayu_dark.toml"]

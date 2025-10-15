@@ -222,3 +222,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+tmp/
+
+# Secrets
+.zsh_secrets
+**/zsh_secrets
+!**/zsh_secrets.template
