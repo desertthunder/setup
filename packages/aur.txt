@@ -1,18 +1,16 @@
 yay
-paru
 
-oh-my-zsh-git
+# Fonts
+ttf-google-sans-code-nf
+
 oh-my-posh-bin
 atuin-bin
 
-asdf-vm-git
-asdf-direnv
-asdf-plugin-update
-asdf-plugin-golang
-asdf-plugin-python
-asdf-plugin-dotnet
-asdf-plugin-ocaml
-asdf-plugin-nodejs
+asdf-vm
+
+visual-studio-code-bin
+google-chrome-bin
+zen-browser-bin
 
 watchexec-bin
 glances-bin

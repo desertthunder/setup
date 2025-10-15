@@ -25,13 +25,9 @@ jq
 yq
 
 zsh
-zsh-completions
-zsh-autosuggestions
-zsh-syntax-highlighting
 zoxide
 fzf
 thefuck
-starship
 alacritty
 direnv
 just
@@ -45,7 +41,6 @@ htop
 duf
 btop
 tree
-neofetch
 
 ttf-jetbrains-mono-nerd
 ttf-fira-code
@@ -56,11 +51,9 @@ noto-fonts-emoji
 inter-font
 
 neovim
-code
 vim
 
 rustup
-rust
 
 git-delta
 lazygit
@@ -73,3 +66,9 @@ lsof
 net-tools
 bandwhich
 httpie
+
+# PDFs
+zathura
+zathura-cb
+zathura-djvu
+zathura-pdf-mupdf
