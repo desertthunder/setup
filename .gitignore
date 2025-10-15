@@ -228,4 +228,4 @@ tmp/
 # Secrets
 .zsh_secrets
 **/zsh_secrets
-!**/zsh_secrets.template
+!**/zsh_secrets.templ

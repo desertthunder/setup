@@ -1,0 +1,181 @@
+# ==============================================================================
+# Core Environment Variables
+# ==============================================================================
+
+EDITOR=$(command -v nvim 2>/dev/null || command -v vim 2>/dev/null || echo "vi")
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+export EDITOR
+export XDG_CONFIG_HOME
+
+# ==============================================================================
+# Platform Detection
+# ==============================================================================
+
+case "$OSTYPE" in
+  darwin*)
+    PLATFORM="mac"
+    ;;
+  linux*)
+    PLATFORM="linux"
+    ;;
+  *)
+    PLATFORM="unknown"
+    ;;
+esac
+
+# ==============================================================================
+# Load Secrets (if available)
+# ==============================================================================
+
+if [ -f "$HOME/.zsh_secrets" ]; then
+  source "$HOME/.zsh_secrets"
+fi
+
+# ==============================================================================
+# Package Manager & PATH Setup
+# ==============================================================================
+
+if [ "$PLATFORM" = "mac" ]; then
+  if [ -x "/opt/homebrew/bin/brew" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [ -x "/usr/local/bin/brew" ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+elif [ "$PLATFORM" = "linux" ]; then
+  export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+fi
+
+# ==============================================================================
+# Development Tools & Version Managers
+# ==============================================================================
+
+# asdf version manager
+if [ -f "$HOME/.asdf/asdf.sh" ]; then
+  source "$HOME/.asdf/asdf.sh"
+  export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+elif [ -f "/opt/asdf-vm/asdf.sh" ]; then
+  source "/opt/asdf-vm/asdf.sh"
+  export PATH="${ASDF_DATA_DIR:-/opt/asdf-vm}/shims:$PATH"
+fi
+
+if [ -d "$HOME/.cargo/bin" ]; then
+  export PATH="$PATH:$HOME/.cargo/bin"
+fi
+
+if [ -d "$HOME/Library/pnpm" ]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+elif [ -d "$HOME/.local/share/pnpm" ]; then
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
+
+if [ -n "$PNPM_HOME" ]; then
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+fi
+
+# ==============================================================================
+# Oh My Zsh
+# ==============================================================================
+
+if [ -d "$HOME/.oh-my-zsh" ]; then
+  ZSH="$HOME/.oh-my-zsh"
+  ZSH_THEME="robbyrussell"
+  plugins=(git asdf poetry rustup cargo deno hugo zellij)
+
+  export ZSH
+  export ZSH_THEME
+  export plugins
+
+  source "$ZSH/oh-my-zsh.sh"
+fi
+
+# ==============================================================================
+# Shell Enhancements
+# ==============================================================================
+
+# Completions
+autoload -Uz compinit
+compinit
+
+# ==============================================================================
+# Platform-Specific SDKs & Tools
+# ==============================================================================
+
+if [ "$PLATFORM" = "mac" ]; then
+  if [ -d "$HOME/SDKs/flutter" ]; then
+    export PATH="$PATH:$HOME/SDKs/flutter/bin"
+  fi
+
+  if [ -d "$HOME/Library/Android/sdk" ]; then
+    export ANDROID_HOME="$HOME/Library/Android/sdk"
+    export PATH="$PATH:$ANDROID_HOME/emulator"
+    export PATH="$PATH:$ANDROID_HOME/tools"
+    export PATH="$PATH:$ANDROID_HOME/tools/bin"
+    export PATH="$PATH:$ANDROID_HOME/platform-tools"
+  fi
+
+  if [ -d "$HOME/.pub-cache/bin" ]; then
+    export PATH="$PATH:$HOME/.pub-cache/bin"
+  fi
+
+  if [ -d "$HOME/Library/Application Support/Coursier/bin" ]; then
+    export PATH="$PATH:$HOME/Library/Application Support/Coursier/bin"
+  fi
+
+  if [ -r "$HOME/.opam/opam-init/init.zsh" ]; then
+    source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2>&1
+  fi
+
+  if [ -f "$HOME/.local/share/dune/env/env.zsh" ]; then
+    source "$HOME/.local/share/dune/env/env.zsh"
+  fi
+
+  if [ -f "$HOME/.ghcup/env" ]; then
+    source "$HOME/.ghcup/env"
+  fi
+fi
+
+if [ "$PLATFORM" = "linux" ]; then
+  if [ -r "$HOME/.opam/opam-init/init.zsh" ]; then
+    source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2>&1
+  fi
+
+  if [ -f "$HOME/.local/share/dune/env/env.zsh" ]; then
+    source "$HOME/.local/share/dune/env/env.zsh"
+  fi
+
+  if [ -f "$HOME/.ghcup/env" ]; then
+    source "$HOME/.ghcup/env"
+  fi
+fi
+
+# ==============================================================================
+# Prompt/Theme
+# ==============================================================================
+
+if command -v oh-my-posh > /dev/null && [ -f "$HOME/.omp.json" ]; then
+  eval "$(oh-my-posh init zsh --config ~/.omp.json)"
+fi
+
+# ==============================================================================
+# Aliases
+# ==============================================================================
+
+if [ "$PLATFORM" = "mac" ]; then
+  if [ -d "/Applications/love.app" ]; then
+    alias love="/Applications/love.app/Contents/MacOS/love"
+  fi
+fi
+
+# ==============================================================================
+# Application Configuration
+# ==============================================================================
+
+if command -v ollama > /dev/null; then
+  export OLLAMA_CONTEXT_LENGTH=32768
+  export OLLAMA_FLASH_ATTENTION=true
+  export OLLAMA_KV_CACHE_TYPE=q4_0
+fi

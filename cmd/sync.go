@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -7,101 +7,135 @@ import (
 	"path/filepath"
 )
 
-// GetRepoDir returns the repository directory containing nvim config.
-// It resolves the path to <repo>/config/nvim where this binary is located.
-func GetRepoDir() (string, error) {
+// ConfigType represents a configuration that can be synced.
+type ConfigType struct {
+	Name       string   // Display name (e.g., "neovim", "zsh")
+	RepoPath   string   // Path in repo (e.g., "config/nvim")
+	SystemPath string   // Path on system (e.g., "~/.config/nvim")
+	IsFile     bool     // true if config is a single file, false if directory
+	Excludes   []string // rsync exclude patterns
+}
+
+// GetRepoRoot returns the repository root directory where the binary is located.
+func GetRepoRoot() (string, error) {
 	exe, err := os.Executable()
 	if err != nil {
 		return "", fmt.Errorf("failed to get executable path: %w", err)
 	}
-
-	// Get the directory containing the executable
 	exeDir := filepath.Dir(exe)
-
-	// Go up to the repo root (assuming exe is in tmp/ or similar)
 	repoRoot := filepath.Dir(exeDir)
-
-	// Build path to config/nvim
-	nvimConfigPath := filepath.Join(repoRoot, "config", "nvim")
-
-	return nvimConfigPath, nil
+	return repoRoot, nil
 }
 
-// GetNvimConfig returns the nvim config directory path (~/.config/nvim).
-func GetNvimConfig() (string, error) {
+// GetHomeDir returns the user's home directory.
+func GetHomeDir() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return "", fmt.Errorf("failed to get home directory: %w", err)
 	}
-
-	return filepath.Join(homeDir, ".config", "nvim"), nil
+	return homeDir, nil
 }
 
-// RunRsync executes rsync to synchronize config directories.
-// It ensures the target directory exists and runs rsync with sensible flags.
-func RunRsync(source, target, operation string) error {
-	// Ensure target directory exists
-	if err := os.MkdirAll(target, 0755); err != nil {
+// ExpandPath expands ~ to home directory in paths.
+func ExpandPath(path string) (string, error) {
+	if len(path) == 0 || path[0] != '~' {
+		return path, nil
+	}
+
+	homeDir, err := GetHomeDir()
+	if err != nil {
+		return "", err
+	}
+
+	if len(path) == 1 {
+		return homeDir, nil
+	}
+
+	return filepath.Join(homeDir, path[1:]), nil
+}
+
+// GetConfigPath returns the full path for a config (repo or system).
+func (c *ConfigType) GetConfigPath(isRepo bool) (string, error) {
+	if isRepo {
+		repoRoot, err := GetRepoRoot()
+		if err != nil {
+			return "", err
+		}
+		return filepath.Join(repoRoot, c.RepoPath), nil
+	}
+	return ExpandPath(c.SystemPath)
+}
+
+// RunRsync executes rsync to synchronize config directories or files.
+func RunRsync(source, target, configName, operation string, isFile bool, excludes []string) error {
+	targetPath := target
+	if isFile {
+		targetPath = filepath.Dir(target)
+	}
+
+	if err := os.MkdirAll(targetPath, 0755); err != nil {
 		return fmt.Errorf("failed to create target directory: %w", err)
 	}
 
-	fmt.Println(BoldCyan(fmt.Sprintf("%s neovim config...", operation)))
+	Print.InfoC(fmt.Sprintf("%s %s config...", operation, configName))
 	fmt.Printf("%s %s\n", Dim("Source:"), source)
 	fmt.Printf("%s %s\n", Dim("Target:"), target)
 
-	cmd := exec.Command("rsync",
-		"-av",
-		"--delete",
-		"--exclude=.git",
-		"--exclude=*.swp",
-		"--exclude=*.swo",
-		source+"/",
-		target+"/",
-	)
+	args := []string{"-av"}
+
+	if !isFile {
+		args = append(args, "--delete")
+	}
+
+	args = append(args, "--exclude=.git", "--exclude=*.swp", "--exclude=*.swo")
+
+	for _, exclude := range excludes {
+		args = append(args, "--exclude="+exclude)
+	}
+
+	if isFile {
+		args = append(args, source, target)
+	} else {
+		args = append(args, source+"/", target+"/")
+	}
+
+	cmd := exec.Command("rsync", args...)
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("rsync failed: %w\nOutput: %s", err, string(output))
 	}
 
-	fmt.Println(BoldGreen(fmt.Sprintf("Config %s successfully", operation)))
+	Print.Success(fmt.Sprintf("%s config %s successfully", configName, operation))
 	return nil
 }
 
-// UpdateConfig syncs nvim config from repo to ~/.config/nvim.
-func UpdateConfig() error {
-	repoDir, err := GetRepoDir()
+// SyncConfig synchronizes a config between repo and system.
+func SyncConfig(config *ConfigType, toSystem bool) error {
+	repoPath, err := config.GetConfigPath(true)
 	if err != nil {
 		return err
 	}
 
-	nvimConfig, err := GetNvimConfig()
+	systemPath, err := config.GetConfigPath(false)
 	if err != nil {
 		return err
 	}
 
-	if _, err := os.Stat(repoDir); os.IsNotExist(err) {
-		return fmt.Errorf("%s Repository config not found at %s", BoldRed("Error:"), repoDir)
+	var source, target, operation string
+	if toSystem {
+		source = repoPath
+		target = systemPath
+		operation = "Deploying"
+	} else {
+		source = systemPath
+		target = repoPath
+		operation = "Backing up"
 	}
 
-	return RunRsync(repoDir, nvimConfig, "Updating")
-}
-
-// BackupConfig syncs currently installed nvim config from ~/.config/nvim to repo.
-func BackupConfig() error {
-	repoDir, err := GetRepoDir()
-	if err != nil {
-		return err
+	if _, err := os.Stat(source); os.IsNotExist(err) {
+		return fmt.Errorf("%s config not found at %s", config.Name, source)
 	}
 
-	nvimConfig, err := GetNvimConfig()
-	if err != nil {
-		return err
-	}
-
-	if _, err := os.Stat(nvimConfig); os.IsNotExist(err) {
-		return fmt.Errorf("%s Nvim config not found at %s", BoldRed("Error:"), nvimConfig)
-	}
-
-	return RunRsync(nvimConfig, repoDir, "Backing up")
+	return RunRsync(source, target, config.Name, operation, config.IsFile, config.Excludes)
 }
