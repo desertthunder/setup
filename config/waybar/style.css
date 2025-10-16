@@ -9,14 +9,18 @@
 }
 
 #workspaces{
-  background-color: rgba(230,233,239,1.0); /* mantle */
+  background-color: transparent;
+  /* background-color: rgba(230,233,239,1.0);  */
+  /* mantle */
   border: none;
   box-shadow: none;
 }
 
 #tray{
   margin: 6px 3px;
-  background-color: rgba(36, 36, 52, 1.0); /* custom color - not in catppuccin */
+  background-color: transparent;
+  /* background-color: rgba(36, 36, 52, 1.0);  */
+  /* custom color - not in catppuccin */
   /* Internal Padding */
   padding: 4px 8px;
   border-radius: 6px;
@@ -24,9 +28,10 @@
 }
 
 #waybar {
-  background-color: #e6e9ef; /* mantle */
-  transition-property: background-color;
-  transition-duration: 0.5s;
+  background-color: transparent;
+  /* background-color: #e6e9ef; mantle */
+  /* transition-property: background-color; */
+  /* transition-duration: 0.5s; */
 }
 
 #window,
