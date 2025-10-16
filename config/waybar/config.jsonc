@@ -6,14 +6,13 @@
     // TLBR
     "margin": "10, 10, 0, 10",
     "modules-left": [
-        "hyprland/workspaces",
-        "tray",
-        "custom/lock",
-        "custom/reboot",
         "custom/power",
-        "clock"
+        "custom/reboot",
+        "custom/lock",
+        "hyprland/workspaces",
+        "tray"
     ],
-    "modules-center": ["hyprland/window"],
+    "modules-center": ["clock", "hyprland/window"],
     "modules-right": [
         "network",
         "battery",
