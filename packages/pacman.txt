@@ -28,15 +28,19 @@ yq
 ##################################################
 # Better Utilities                               #
 ##################################################
-zsh
-fzf
 thefuck
-alacritty
 just
 bat
 fd
 ripgrep
 tree
+
+# System Utilities
+zsh
+alacritty
+fzf
+htop
+ranger
 
 ##################################################
 # Fonts                                          #
@@ -61,15 +65,13 @@ otf-monaspace-nerd
 otf-monaspace-nerdfonts
 otf-overpass-nerd
 
+# Engineering
 neovim
 vim
 
 rustup
 
 git-delta
-lazygit
-shellcheck
-shfmt
 
 # PDFs
 zathura
@@ -84,3 +86,7 @@ blueman
 
 # Network
 networkmanager
+
+# Clipboard
+wl-clipboard
+cliphist

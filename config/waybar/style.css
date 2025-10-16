@@ -1,6 +1,6 @@
 * {
   font-family: "CommitMono Nerd Font Propo", "Font Awesome 7 Free", "Font Awesome 7 Free Solid";
-  font-size: 12px;
+  font-size: 13px;
   border-radius: 6px;
   min-height: 0;
   border: none;
@@ -9,14 +9,14 @@
 }
 
 #workspaces{
-  background-color: rgba(24,24,37,1.0);
+  background-color: rgba(230,233,239,1.0); /* mantle */
   border: none;
   box-shadow: none;
 }
 
 #tray{
   margin: 6px 3px;
-  background-color: rgba(36, 36, 52, 1.0);
+  background-color: rgba(36, 36, 52, 1.0); /* custom color - not in catppuccin */
   /* Internal Padding */
   padding: 4px 8px;
   border-radius: 6px;
@@ -24,7 +24,7 @@
 }
 
 #waybar {
-  background-color: #181825;
+  background-color: #e6e9ef; /* mantle */
   transition-property: background-color;
   transition-duration: 0.5s;
 }
@@ -45,48 +45,48 @@
   border-radius: 4px;
   margin: 4px 2px;
   padding: 4px 8px;
-  background-color: #1e1e2e;
-  color: #181825;
+  background-color: #eff1f5; /* base */
+  color: #e6e9ef; /* mantle */
 }
 
 #clock {
-  background-color: #89b4fa;
+  background-color: #1e66f5; /* blue */
 }
 #custom-power{
-  background-color: #f38ba8;
+  background-color: #d20f39; /* red */
 }
 #custom-reboot{
-  background-color: #a6e3a1;
+  background-color: #40a02b; /* green */
 }
 #bluetooth{
-  background-color: #f9e2af;
+  background-color: #df8e1d; /* yellow */
 }
 #battery{
-  background-color: #cba6f7;
+  background-color: #8839ef; /* mauve */
 }
 #pulseaudio{
-  background-color: #89dceb;
+  background-color: #04a5e5; /* sky */
 }
 #backlight{
-  background-color: #a6a3a1;
+  background-color: #a6a3a1; /* custom color - not in catppuccin (possibly typo for green?) */
 }
 #custom-temperature{
-  background-color: #74c7ec;
+  background-color: #209fb5; /* sapphire */
 }
 #memory{
-  background-color: #f7768e;
+  background-color: #f7768e; /* custom color - not in catppuccin */
 }
 #cpu{
-  background-color: #f38ba8;
+  background-color: #d20f39; /* red */
 }
 #network{
-  background-color: #fab387;
+  background-color: #fe640b; /* peach */
 }
 #custom-lock{
-  background-color: #94e2d5;
+  background-color: #179299; /* teal */
 }
 #window{
-  background-color: #74c7ec;
+  background-color: #209fb5; /* sapphire */
 }
 
 #waybar.hidden {
@@ -103,33 +103,33 @@
   padding: 4px 12px;
   margin: 4px 2px;
   border-radius: 4px;
-  background-color: rgba(36, 36, 52, 1.0);
-  color: #cdd6f4;
+  background-color: rgba(36, 36, 52, 1.0); /* custom color - not in catppuccin */
+  color: #4c4f69; /* text */
 }
 
 #workspaces button.active {
-  color: #1e1e2e;
-  background-color: #cdd6f4;
+  color: #eff1f5; /* base */
+  background-color: #4c4f69; /* text */
 }
 
 #workspaces button:hover {
   box-shadow: inherit;
   text-shadow: inherit;
-  color: #1e1e2e;
-  background-color: #cdd6f4;
+  color: #eff1f5; /* base */
+  background-color: #4c4f69; /* text */
 }
 
 tooltip {
   border-radius: 6px;
   padding: 12px;
-  background-color: #131822;
-  color: #C0C0C0;
+  background-color: #131822; /* custom color - not in catppuccin */
+  color: #C0C0C0; /* custom color - not in catppuccin */
 }
 
 tooltip label {
   padding: 4px;
-  background-color: #131822;
-  color: #C0C0C0;
+  background-color: #131822; /* custom color - not in catppuccin */
+  color: #C0C0C0; /* custom color - not in catppuccin */
 }
 
 #waybar.empty #window {

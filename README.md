@@ -63,6 +63,12 @@ rsync -av --delete ${XDG_CONFIG_HOME:-~/.config}/$CONFIG_NAME/ \
 `-h`: human readable
 `-a`: archive mode (preserves permissions, timestamps, symlinks, etc.)
 
+## Inspiration
+
+- Folke's Dotfiles
+- Omarchy (DHH's opinionated arch installation)
+- My favorite [subreddit](https://reddit.com/r/unixporn)
+
 ## TODO
 
 1. Thinner, lighter borders
