@@ -3,6 +3,8 @@
     "position": "top",
     "height": 45,
     "spacing": 0,
+    // TLBR
+    "margin": "10, 10, 0, 10",
     "modules-left": [
         "hyprland/workspaces",
         "tray",
@@ -32,12 +34,12 @@
         },
         "format-icons": {
             "1": "󰣇",
-            "2": "",
-            "3": "",
-            "4": "󰇮",
-            "5": "",
-            "6": "",
-            "7": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            // "6": "󰇮",
+            // "7": "",
             "active": "󱓻"
         }
     },
@@ -98,7 +100,7 @@
     },
     "custom/temperature": {
         "exec": "sensors | awk '/^Package id 0:/ {print int($4)}'",
-        "format": " {}°C ",
+        "format": "  {}°C ",
         "interval": 5,
         "tooltip": true,
         "tooltip-format": "Current CPU temp: {}°C"
@@ -120,7 +122,7 @@
         "tooltip-format": "{:L%A, %B %d, %Y}"
     },
     "tray": {
-        "icon-size": 17,
+        "icon-size": 18,
         "spacing": 6
     },
     "backlight": {
@@ -129,10 +131,10 @@
         "tooltip": true,
         "tooltip-format": "Brightness: {percent}%",
         "format-icons": [
-            " 󰃞 ", // Dark
-            " 󰃝 ", // Medium
-            " 󰃟 ", // Light
-            " 󰃠 " // Bright
+            " 󰃞 ",
+            " 󰃝 ",
+            " 󰃟 ",
+            " 󰃠 "
         ]
     },
     "bluetooth": {

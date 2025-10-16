@@ -1,3 +1,4 @@
+# Major Dependencies
 base-devel
 git
 curl
@@ -24,31 +25,41 @@ gawk
 jq
 yq
 
+##################################################
+# Better Utilities                               #
+##################################################
 zsh
-zoxide
 fzf
 thefuck
 alacritty
-direnv
 just
-chezmoi
 bat
-eza
 fd
 ripgrep
-tldr
-htop
-duf
-btop
 tree
 
-ttf-jetbrains-mono-nerd
-ttf-fira-code
+##################################################
+# Fonts                                          #
+##################################################
+
 ttf-nerd-fonts-symbols
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 inter-font
+woff2-font-awesome
+
+ttf-google-sans-code-nf
+ttf-hack-nerd
+ttf-jetbrains-mono-nerd
+ttf-space-mono-nerd
+ttf-zed-mono-nerd
+
+otf-commit-mono-nerd
+otf-geist-mono-nerd
+otf-monaspace-nerd
+otf-monaspace-nerdfonts
+otf-overpass-nerd
 
 neovim
 vim
@@ -60,15 +71,16 @@ lazygit
 shellcheck
 shfmt
 
-mtr
-nmap
-lsof
-net-tools
-bandwhich
-httpie
-
 # PDFs
 zathura
 zathura-cb
 zathura-djvu
 zathura-pdf-mupdf
+
+# Bluetooth
+bluez
+bluez-utils
+blueman
+
+# Network
+networkmanager
