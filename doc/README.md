@@ -74,6 +74,25 @@ config/nvim/
 
 - `<C-h/j/k/l>` - Move to left/down/up/right window
 
+### Buffer Management
+
+- `<leader>bn` - New buffer
+- `<leader>bd` - Delete current buffer
+- `<leader>bp` - Toggle pin buffer
+- `<leader>bP` - Delete non-pinned buffers
+- `<leader>br` - Delete buffers to the right
+- `<leader>bl` - Delete buffers to the left
+- `<S-h>` or `[b` - Previous buffer
+- `<S-l>` or `]b` - Next buffer
+- `[B` - Move buffer left
+- `]B` - Move buffer right
+
+### File Explorer (Neo-tree)
+
+- `<leader>te` - Toggle/reveal Neo-tree file explorer
+- `\\` - Toggle/reveal Neo-tree file explorer
+- `\\` (inside Neo-tree) - Close Neo-tree window
+
 ### LSP (when active)
 
 - `grn` - Rename symbol
@@ -142,6 +161,7 @@ config/nvim/
 | ---------------------- | ------------------------------------------------------ |
 | **lazy.nvim**          | Plugin manager                                         |
 | **telescope.nvim**     | Fuzzy finder for files, buffers, LSP, etc.             |
+| **neo-tree.nvim**      | File explorer sidebar                                  |
 | **which-key.nvim**     | Shows pending keybindings                              |
 | **nvim-lspconfig**     | LSP configuration                                      |
 | **mason.nvim**         | LSP/DAP/linter installer                               |
@@ -150,6 +170,7 @@ config/nvim/
 | **conform.nvim**       | Code formatting (format on save)                       |
 | **nvim-treesitter**    | Syntax highlighting and code understanding             |
 | **gitsigns.nvim**      | Git decorations and commands                           |
+| **bufferline.nvim**    | Buffer/tab line with custom keybindings                |
 | **mini.nvim**          | Collection of small plugins (statusline, surround, ai) |
 | **tokyonight.nvim**    | Colorscheme                                            |
 | **todo-comments.nvim** | Highlight TODO/FIXME/etc in comments                   |
