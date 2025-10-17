@@ -100,6 +100,22 @@ return {
       vim.cmd 'colorscheme dracula-recharged'
     end,
   },
+  {
+    'iced-lightning',
+    dir = vim.fn.stdpath 'config' .. '/lua/iced-lightning',
+    -- priority = 1000,
+    config = function()
+      require('iced-lightning').setup {
+        transparent = false,
+        terminal_colors = true,
+        styles = {
+          comments = { italic = true },
+          keywords = { italic = true },
+        },
+      }
+      -- vim.cmd 'colorscheme iced-lightning'
+    end,
+  },
   { 'NMAC427/guess-indent.nvim' },
   {
     'folke/todo-comments.nvim',
@@ -113,8 +129,8 @@ return {
     main = 'ibl',
     opts = { exclude = { filetypes = { 'dashboard' } } },
   },
-  -- Lua LSP for Neovim config, runtime and plugins
   {
+    -- Lua LSP for Neovim config, runtime and plugins
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = { library = { { path = '${3rd}/luv/library', words = { 'vim%.uv' } } } },

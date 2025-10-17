@@ -3,8 +3,7 @@
     "position": "top",
     "height": 45,
     "spacing": 0,
-    // TLBR
-    "margin": "10, 10, 0, 10",
+    "margin": "10, 10, 0, 10", // T, L, B, R
     "modules-left": [
         "custom/power",
         "custom/reboot",
@@ -29,16 +28,16 @@
         "format": "{icon}",
         "on-click": "activate",
         "persistent-workspaces": {
-            "*": [1, 2, 3, 4, 5]
+            "*": [1, 2, 3, 4]
         },
+        // "4": "",
+        // "6": "󰇮",
+        // "7": "",
         "format-icons": {
             "1": "󰣇",
             "2": "",
             "3": "",
-            "4": "",
-            "5": "",
-            // "6": "󰇮",
-            // "7": "",
+            "4": "",
             "active": "󱓻"
         }
     },
@@ -116,7 +115,7 @@
     "clock": {
         "interval": 1,
         "timezone": "America/Chicago",
-        "format": "  {:%a %b %d} {:%H:%M} ",
+        "format": "  {:%a %b %d %H:%M} ",
         "tooltip": true,
         "tooltip-format": "{:L%A, %B %d, %Y}"
     },
@@ -129,12 +128,7 @@
         "format": "{icon}{percent}% ",
         "tooltip": true,
         "tooltip-format": "Brightness: {percent}%",
-        "format-icons": [
-            " 󰃞 ",
-            " 󰃝 ",
-            " 󰃟 ",
-            " 󰃠 "
-        ]
+        "format-icons": [" 󰃞 ", " 󰃝 ", " 󰃟 ", " 󰃠 "]
     },
     "bluetooth": {
         "format": "  {status} ",
