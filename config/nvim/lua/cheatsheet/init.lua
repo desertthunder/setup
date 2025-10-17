@@ -8,6 +8,10 @@ local state = {
 function M.setup(opts)
   local config = require 'cheatsheet.config'
   config.setup(opts)
+
+  vim.api.nvim_create_user_command('Cheatsheet', function() M.toggle() end, {
+    desc = 'Toggle cheatsheet window',
+  })
 end
 
 function M.toggle()

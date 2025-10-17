@@ -22,8 +22,8 @@ return {
         dashboard.button('n', ' ' .. ' New file', [[<cmd> ene <BAR> startinsert <cr>]]),
         dashboard.button('r', ' ' .. ' Recent files', '<cmd> Telescope oldfiles <cr>'),
         dashboard.button('g', ' ' .. ' Find text', '<cmd> Telescope live_grep <cr>'),
-        dashboard.button('c', ' ' .. ' Config', '<cmd> Telescope find_files cwd=' .. vim.fn.stdpath 'config' .. ' <cr>'),
-        dashboard.button('l', '󰒲 ' .. ' Lazy', '<cmd> Lazy <cr>'),
+        -- dashboard.button('c', ' ' .. ' Config', '<cmd> Telescope find_files cwd=' .. vim.fn.stdpath 'config' .. ' <cr>'),
+        -- dashboard.button('l', '󰒲 ' .. ' Lazy', '<cmd> Lazy <cr>'),
         dashboard.button('q', ' ' .. ' Quit', '<cmd> qa <cr>'),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
@@ -78,7 +78,28 @@ return {
     priority = 1000,
     config = function() require('tokyonight').setup { styles = { comments = { italic = false } } } end,
   },
-  { 'EdenEast/nightfox.nvim', config = function() vim.cmd 'colorscheme carbonfox' end },
+  {
+    'EdenEast/nightfox.nvim',
+    config = function()
+      -- vim.cmd 'colorscheme carbonfox'
+    end,
+  },
+  {
+    'dracula-recharged',
+    dir = vim.fn.stdpath 'config' .. '/lua/dracula-recharged',
+    priority = 1000,
+    config = function()
+      require('dracula-recharged').setup {
+        transparent = false,
+        terminal_colors = true,
+        styles = {
+          comments = { italic = true },
+          keywords = { italic = true },
+        },
+      }
+      vim.cmd 'colorscheme dracula-recharged'
+    end,
+  },
   { 'NMAC427/guess-indent.nvim' },
   {
     'folke/todo-comments.nvim',
@@ -87,8 +108,8 @@ return {
     opts = { signs = false },
   },
   {
-    'lukas-reineke/indent-blankline.nvim',
     -- See `:help ibl`
+    'lukas-reineke/indent-blankline.nvim',
     main = 'ibl',
     opts = { exclude = { filetypes = { 'dashboard' } } },
   },
@@ -97,6 +118,11 @@ return {
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = { library = { { path = '${3rd}/luv/library', words = { 'vim%.uv' } } } },
+  },
+  {
+    'catgoose/nvim-colorizer.lua',
+    event = 'BufReadPre',
+    opts = { css = true, css_fn = true },
   },
   {
     'echasnovski/mini.nvim',
@@ -112,15 +138,16 @@ return {
   },
   {
     'akinsho/bufferline.nvim',
-    version = "*", dependencies = 'nvim-tree/nvim-web-devicons',
+    version = '*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
     opts = {
       options = {
         offsets = {
           {
-            filetype = "neo-tree",
-            text = "Neo-tree",
-            highlight = "Directory",
-            text_align = "left",
+            filetype = 'neo-tree',
+            text = 'Neo-tree',
+            highlight = 'Directory',
+            text_align = 'left',
           },
         },
       },
@@ -138,6 +165,6 @@ return {
       { ']b', '<cmd>BufferLineCycleNext<cr>', desc = 'Next Buffer' },
       { '[B', '<cmd>BufferLineMovePrev<cr>', desc = 'Move buffer prev' },
       { ']B', '<cmd>BufferLineMoveNext<cr>', desc = 'Move buffer next' },
-    }
+    },
   },
 }

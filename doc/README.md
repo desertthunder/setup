@@ -60,6 +60,17 @@ config/nvim/
 - `:wq` or `:x` - Save and quit
 - `:q!` - Quit without saving
 
+**Moving Lines:**
+
+- Move a line up: `ddkP`
+  - `dd` will delete the line and add it to the default register
+  - `k` will move up a line (`j` would move down a line)
+  - `P` will paste above the current line
+- Move a line down: `ddp`
+- Moving up and down: `:m` for move
+  - `:m +1` - moves down 1 line
+  - `:m -2` - move up 1 lines
+
 ## Custom Keybindings
 
 ### General

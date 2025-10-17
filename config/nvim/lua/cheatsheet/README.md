@@ -192,3 +192,13 @@ The `infer_category()` function uses heuristics. Add custom patterns for your ke
 - `:help nvim_get_keymap` - Extract keymaps
 - `:help nvim_create_autocmd` - Create autocommands
 - `:help lua-guide` - Lua in Neovim
+
+## CHANGELOG
+
+### Updated
+
+- 2025/10/17: added normalize_key to keymaps to transform leader from empty space to `<Leader>`
+
+### Fixed
+
+- 2025/10/17: Fixed table rendering

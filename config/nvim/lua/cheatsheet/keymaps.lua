@@ -15,6 +15,15 @@ function M.extract()
   return M.group_keymaps(all_keymaps)
 end
 
+-- Replaces literal leader with <Leader>
+function M.normalize_key(key)
+  local leader = vim.g.mapleader or ' ' -- I use space as my leader key
+  if key:sub(1, 1) == leader then
+    key = '<Leader>' .. key:sub(2)
+  end
+  return key
+end
+
 function M.get_mode_keymaps(mode)
   local keymaps = {}
   local raw_maps = vim.api.nvim_get_keymap(mode)
@@ -23,7 +32,7 @@ function M.get_mode_keymaps(mode)
     if map.desc and map.desc ~= '' then
       table.insert(keymaps, {
         mode = mode,
-        key = map.lhs,
+        key = M.normalize_key(map.lhs),
         description = map.desc,
         rhs = map.rhs,
       })

@@ -46,16 +46,18 @@ function M.open_floating_window(buf, window_config)
   vim.wo[win].winhl = 'Normal:Normal'
   vim.wo[win].wrap = false
   vim.wo[win].cursorline = true
+  vim.wo[win].scrolloff = 0
+  vim.api.nvim_set_option_value('fillchars', 'eob: ', { win = win })
 
   return win
 end
 
 function M.format_category_block(category, keymaps, width)
   local lines = {}
-  local col_width = math.floor((width - 4) / 2)
+  local col_width = math.floor((width - 6) / 2)
 
   local category_text = ' ' .. category .. ' '
-  local border_fill = string.rep('─', width - vim.fn.strdisplaywidth(category_text) - 2)
+  local border_fill = string.rep('─', width - vim.fn.strdisplaywidth(category_text) - 3)
   table.insert(lines, '╭─' .. category_text .. border_fill .. '╮')
 
   for i = 1, #keymaps, 2 do
@@ -105,8 +107,8 @@ function M.render_content(buf, grouped_keymaps, config)
   end
 
   table.insert(lines, '')
-  table.insert(lines, '─────────────────────────────────────')
-  table.insert(lines, 'Press q or <Esc> to close')
+  table.insert(lines, M.center_string(string.rep('─', win_width - 4), win_width))
+  table.insert(lines, M.center_string('Press q or <Esc> to close', win_width))
 
   vim.bo[buf].modifiable = true
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
@@ -144,11 +146,29 @@ function M.apply_highlights(buf, lines, config)
     local line_idx = i - 1
 
     if i <= #config.header then
-      vim.api.nvim_buf_add_highlight(buf, ns, config.highlights.header, line_idx, 0, -1)
+      vim.api.nvim_buf_set_extmark(buf, ns, line_idx, 0, {
+        hl_group = config.highlights.header,
+        end_line = line_idx + 1,
+      })
     elseif line:match '^╭─' or line:match '^╰' then
-      vim.api.nvim_buf_add_highlight(buf, ns, config.highlights.category, line_idx, 0, -1)
+      vim.api.nvim_buf_set_extmark(buf, ns, line_idx, 0, {
+        hl_group = config.highlights.category,
+        end_line = line_idx + 1,
+      })
     elseif line:match '^│' then
-      vim.api.nvim_buf_add_highlight(buf, ns, config.highlights.category, line_idx, 0, 1)
+      -- Highlight left border
+      vim.api.nvim_buf_set_extmark(buf, ns, line_idx, 0, {
+        hl_group = config.highlights.category,
+        end_col = 3,  -- │ is 3 bytes in UTF-8
+      })
+      -- Highlight right border (│ is 3 bytes in UTF-8)
+      local line_byte_len = #line
+      if line_byte_len > 0 then
+        vim.api.nvim_buf_set_extmark(buf, ns, line_idx, line_byte_len - 3, {
+          hl_group = config.highlights.category,
+          end_col = line_byte_len,
+        })
+      end
     end
   end
 end
@@ -163,6 +183,27 @@ function M.setup_buffer(buf, win)
 
   vim.keymap.set('n', 'q', close_window, opts)
   vim.keymap.set('n', '<Esc>', close_window, opts)
+
+  local function safe_move(key)
+    return function()
+      local line_count = vim.api.nvim_buf_line_count(buf)
+      local current_line = vim.api.nvim_win_get_cursor(win)[1]
+
+      if key == 'j' or key == '<Down>' then
+        if current_line < line_count then vim.cmd('normal! ' .. key) end
+      elseif key == 'k' or key == '<Up>' then
+        if current_line > 1 then vim.cmd('normal! ' .. key) end
+      else
+        vim.cmd('normal! ' .. key)
+      end
+    end
+  end
+
+  vim.keymap.set('n', 'j', safe_move 'j', opts)
+  vim.keymap.set('n', 'k', safe_move 'k', opts)
+  vim.keymap.set('n', '<Down>', safe_move '<Down>', opts)
+  vim.keymap.set('n', '<Up>', safe_move '<Up>', opts)
+  vim.keymap.set('n', 'G', safe_move 'G', opts)
 
   vim.api.nvim_create_autocmd('BufLeave', {
     buffer = buf,
